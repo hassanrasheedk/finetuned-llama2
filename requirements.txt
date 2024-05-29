@@ -1,0 +1,11 @@
+bertopic
+huggingface
+datasets
+accelerate
+peft
+bitsandbytes
+transformers
+trl
+xformers
+adjustText
+jupyter
