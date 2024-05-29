@@ -35,7 +35,10 @@ You can run the script with either direct text input or by providing a path to a
 
 ```sh
 python predict.py "Your input text here"
+```
 
+### With Text File
+```
 python predict.py /path/to/your/textfile.txt
 ```
 
