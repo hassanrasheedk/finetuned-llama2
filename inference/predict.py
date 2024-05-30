@@ -9,8 +9,8 @@ from peft import PeftModel, LoraConfig
 def download_checkpoint(repo_id, checkpoint_dir):
     if not os.path.exists(checkpoint_dir):
         os.makedirs(checkpoint_dir)
-        hf_hub_download(repo_id=repo_id, filename="adapter_model.bin", local_dir=checkpoint_dir, local_dir_use_symlinks=False, token=HUGGING_FACE_TOKEN)
-        hf_hub_download(repo_id=repo_id, filename="adapter_config.json", local_dir=checkpoint_dir, local_dir_use_symlinks=False, token=HUGGING_FACE_TOKEN)
+        hf_hub_download(repo_id=repo_id, filename="adapter_model.bin", local_dir=checkpoint_dir, local_dir_use_symlinks=False, use_auth_token=HUGGING_FACE_TOKEN)
+        hf_hub_download(repo_id=repo_id, filename="adapter_config.json", local_dir=checkpoint_dir, local_dir_use_symlinks=False, use_auth_token=HUGGING_FACE_TOKEN)
 
 
 def load_model_and_tokenizer(model_path, checkpoint_path, cache_dir, device_map):
@@ -22,24 +22,27 @@ def load_model_and_tokenizer(model_path, checkpoint_path, cache_dir, device_map)
             use_cache=True, 
             return_dict=True, 
             torch_dtype=torch.float16,
-            device_map=device_map
+            device_map=device_map,
+            token=HUGGING_FACE_TOKEN
         )
     else:
         print("Final model not found. Loading base model and applying LoRA adapters.")
         download_checkpoint(REPO_ID, checkpoint_path)
         model = AutoModelForCausalLM.from_pretrained(
-            MODEL_NAME, 
+            MODEL_NAME,
+            low_cpu_mem_usage=True,
+            use_cache=True,
+            return_dict=True,
             cache_dir=cache_dir, 
             torch_dtype=torch.float16,
             device_map=device_map,
             token=HUGGING_FACE_TOKEN
         )
-        # adapter_config = LoraConfig.from_pretrained(checkpoint_path)
         model = PeftModel.from_pretrained(model, checkpoint_path)
         model = model.merge_and_unload()
         model.save_pretrained(MODEL_PATH)
 
-    tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
+    tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME, token=HUGGING_FACE_TOKEN)
     tokenizer.pad_token = tokenizer.eos_token
     tokenizer.padding_side = "right"
     tokenizer.save_pretrained(MODEL_PATH)

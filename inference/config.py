@@ -1,4 +1,4 @@
-HUGGING_FACE_TOKEN = "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"
+HUGGING_FACE_TOKEN = "your_token_here"
 MODEL_PATH = "final_model"
 CHECKPOINT_PATH = "final_checkpoint"
 CACHE_DIR = "models"
