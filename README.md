@@ -10,6 +10,7 @@ This project demonstrates how to use a fine-tuned model to generate labels for t
 - [Running in a Docker Environment](#running-in-a-docker-environment)
 - [Running the Training Script](#running-the-training-script)
 - [Alternative Topic Modeling Method with BERTopic](#alternative-topic-modeling-method-with-bertopic)
+- [Challenges, Key Findings, and Improvements](#challenges-key-findings-and-improvements)
 
 
 ## Setup
@@ -105,3 +106,60 @@ For more details on BERTopic, you can check the following resources:
 - **GitHub Repository**: [BERTopic GitHub Repo](https://github.com/MaartenGr/bertopic?tab=readme-ov-file)
 
 These resources provide a comprehensive guide on how to use BERTopic for topic modeling tasks, including installation, usage, and examples.
+
+## Challenges, Key Findings, and Improvements
+
+### Main Challenges
+
+**Handling Large Models**:
+One of the primary challenges was managing the computational and memory resources required to handle large language models. This involved optimizing memory usage and ensuring that the model could be loaded and run efficiently, even on hardware with limited resources.
+
+**Integration of LoRA Adapters**:
+Integrating Low-Rank Adaptation (LoRA) adapters into the model fine-tuning process was complex. Ensuring the adapters were correctly applied and merged with the base model required careful handling and verification.
+
+**Managing Dependencies and Environment**:
+Setting up the development environment with all the necessary dependencies, particularly those related to GPU acceleration and the BitsandBytes library for quantization, presented compatibility and configuration challenges.
+
+**Data Handling and Preprocessing**:
+Ensuring that input data was correctly formatted and tokenized for the model was crucial. Handling different text inputs, whether from a file or user input, required robust preprocessing steps.
+
+
+### Key Findings
+
+**Effectiveness of LoRA**:
+LoRA adapters were effective in fine-tuning the model with relatively lower computational requirements compared to traditional fine-tuning methods. This technique proved to be a practical approach for adapting the large model to our specific task.
+
+**Importance of Cache Management**:
+Proper management of the cache directory was critical. Setting a writable cache directory ensured smooth downloading and loading of model components, preventing permission errors and improving overall workflow efficiency.
+
+**Prompt Engineering**:
+Crafting effective prompts significantly impacted the quality of the generated topics. Including example prompts and system prompts helped guide the model to produce more accurate and relevant labels.
+
+
+### Ideas for Improvement
+
+**Code Quality Enhancements**:
+
+Modularization: Break down the code into more modular components, such as separate functions or classes for model loading, preprocessing, and inference. This would improve readability and maintainability.
+
+Error Handling: Implement more comprehensive error handling to manage exceptions and provide informative error messages, which can help in debugging and improving user experience.
+
+**Documentation**:
+
+Detailed Docstrings: Add detailed docstrings to all functions and classes, explaining their purpose, inputs, outputs, and any exceptions they might raise.
+
+Usage Examples: Include usage examples in the documentation to help users understand how to run the code and interpret the results.
+
+**Model Evaluation and Improvement**:
+
+Quantitative Metrics: Implement quantitative evaluation metrics, such as accuracy, precision, recall, and F1-score, to assess the performance of the model more objectively.
+
+Hyperparameter Tuning: Explore hyperparameter tuning to optimize model performance further. This could involve experimenting with different learning rates, batch sizes, and adapter configurations.
+
+Data Augmentation: Use data augmentation techniques to enrich the training data, potentially improving the model’s generalization capabilities.
+
+**Deployment Considerations**:
+
+Containerization Improvements: Ensure the Docker container is optimized for performance and security. This includes using a lightweight base image and minimizing the container size by only including necessary dependencies.
+
+Scalability: Consider implementing scalable deployment solutions, such as using Kubernetes for orchestration and managing multiple instances of the model for load balancing.
