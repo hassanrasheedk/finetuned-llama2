@@ -1,6 +1,6 @@
 # Topic Labeling with Hugging Face Transformers
 
-This project demonstrates how to use a fine-tuned model to generate labels for topics. The model can be loaded directly if available or loaded with LoRA adapters if the final model is not available.
+This project demonstrates how to use a fine-tuned model to generate labels for topics. The original model from Meta is finetuned using quantization and LoRA for the topic modeling task.
 
 ## Table of Contents
 
